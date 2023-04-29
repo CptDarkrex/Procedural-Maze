@@ -1,10 +1,10 @@
 from __future__ import annotations
-from cogs import Maze, GuessingContainer
+from cogs import MazeContainer, GuessingContainer
 
 
 class MainMenu:
     def __init__(self):
-        self.maze = Maze()
+        self.maze = MazeContainer()
         self.guess_cont = GuessingContainer()
 
     def launch(self):
