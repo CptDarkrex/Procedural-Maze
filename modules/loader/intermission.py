@@ -45,14 +45,3 @@ class Loader:
     def __exit__(self, exc_type, exc_value, tb):
         # handle exceptions with those variables ^
         self.stop()
-
-
-# if __name__ == "__main__":
-#     with Loader("Loading with context manager"):
-#         for i in range(10):
-#             sleep(0.25)
-#
-#     loader = Loader("Loading with object", "That was fast!", 0.3).start()
-#     for i in range(10):
-#         sleep(0.4)
-#     loader.stop()

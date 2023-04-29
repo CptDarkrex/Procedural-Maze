@@ -36,7 +36,3 @@ class GuessingContainer:
 
     def run_game(self):
         self.print_game()
-
-
-# my_quiz = GuessingContainer()
-# print(my_quiz.run_game())
