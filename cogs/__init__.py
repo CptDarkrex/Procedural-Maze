@@ -1,6 +1,6 @@
-from .maze.plugin import Maze
+from .maze.plugin import MazeContainer
 from .number_guessing.plugin import GuessingContainer
 
 __all__ = [
-    "Maze", "GuessingContainer",
+    "MazeContainer", "GuessingContainer",
 ]
