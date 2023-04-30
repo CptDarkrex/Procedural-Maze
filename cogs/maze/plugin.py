@@ -4,31 +4,85 @@ import random
 class MazeContainer:
     def __init__(self):
         self.player_pos = []
+
+        self.maze_width = 24
+        self.maze_height = 12
+
         self.start_x = 0
         self.start_y = 0
+
         self.exit_obj = "E"  # can be a position; Example: [1, 3]
+
         self.running = False
+
+        self.maze = []
+
+        self.stack = ''
         self.moves = {
             "up": [-1, 0],
             "down": [1, 0],
             "left": [0, -1],
             "right": [0, 1],
         }
-        self.maze = []
 
     def generate_maze(self, width, height):
         # Initialize the maze grid
-        self.maze = [['#'] * width for row in range(height)]
+        #self.maze = [['#'] * width for row in range(height)]
+        self.maze = [['#' for c in range(height)] for r in range(width)]
+        print(self.maze)
 
         # Starting point
-        self.start_x = random.randint(0, width - 1)
-        self.start_y = random.randint(0, height - 1)
+        self.start_x = random.randint(0, (width - 3) // 2) * 2 + 1
+        self.start_y = random.randint(0, (height - 3) // 2) * 2 + 1
 
-        exit_x = random.randint(0, width - 1)
-        exit_y = random.randint(0, height - 1)
+        exit_x = random.randint(0, (width - 3) // 2) * 2 + 1
+        exit_y = random.randint(0, (height - 3) // 2) * 2 + 1
 
         # Generate the maze
-        self.generate_maze_recursive(self.start_x, self.start_y, self.maze)
+        self.maze[self.start_y][self.start_x] = '.'
+        # Create a stack to keep track of visited cells
+        self.stack = [(self.start_y, self.start_x)]
+
+        # Visit all cells in the maze
+        while self.stack:
+            # Get the current cell
+            current_r, current_c = self.stack[-1]
+
+            # Get a random unvisited neighbor
+            neighbors = []
+            if current_r > 1 and self.maze[current_r - 2][current_c] == '#':
+                neighbors.append(('N', current_r - 2, current_c))
+            if current_r < height - 2 and self.maze[current_r + 2][current_c] == '#':
+                neighbors.append(('S', current_r + 2, current_c))
+            if current_c > 1 and self.maze[current_r][current_c - 2] == '#':
+                neighbors.append(('W', current_r, current_c - 2))
+            if current_c < width - 2 and self.maze[current_r][current_c + 2] == '#':
+                neighbors.append(('E', current_r, current_c + 2))
+
+            if neighbors:
+                # Choose a random neighbor and remove the wall
+                direction, next_r, next_c = random.choice(neighbors)
+                self.maze[next_r][next_c] = '.'
+                self.maze[current_r + (next_r - current_r) // 2][current_c + (next_c - current_c) // 2] = '.'
+                # Push the neighbor onto the stack
+                self.stack.append((next_r, next_c))
+            else:
+                # Pop the previous cell from the stack
+                self.stack.pop()
+
+        # Add barriers on the sides
+        for r in range(height):
+            self.maze[r][0] = '|'
+            self.maze[r][-1] = '|'
+        for c in range(width):
+            self.maze[0][c] = '_'
+            self.maze[-1][c] = '_'
+
+        # Print the maze
+        for r in range(height):
+            for c in range(width):
+                print(self.maze[r][c], end='')
+            print()
 
         # Add entrance and exit points
         self.maze[self.start_y][self.start_x] = 'S'
@@ -38,27 +92,6 @@ class MazeContainer:
 
     def init_plr_pos(self):
         self.player_pos = [self.start_y, self.start_x]
-        return
-
-    def generate_maze_recursive(self, x, y, maze):
-        width = len(maze[0])
-        height = len(maze)
-
-        # Directions: 0 = up, 1 = right, 2 = down, 3 = left
-        directions = [(0, -2), (2, 0), (0, 2), (-2, 0)]
-        random.shuffle(directions)
-
-        for direction_x, direction_y in directions:
-            new_dir_x, new_dir_y = x + direction_x, y + direction_y
-
-            if new_dir_x < 0 or new_dir_y < 0 or new_dir_x >= width or new_dir_y >= height:
-                continue
-
-            if maze[new_dir_y][new_dir_x] == '#':
-                maze[y + direction_y // 2][x + direction_x // 2] = '.'
-                maze[new_dir_y][new_dir_x] = '.'
-
-                self.generate_maze_recursive(new_dir_x, new_dir_y, maze)
         return
 
     @staticmethod
@@ -92,6 +125,7 @@ class MazeContainer:
     def move_player(self, inst_player_pos, inst_move):
         """
         This function move the player around the maze
+
         :param inst_player_pos:
         :param inst_move:
         :return:
@@ -102,7 +136,7 @@ class MazeContainer:
 
     def run_game(self):
         if self.running is False:
-            self.maze = self.generate_maze(10, 10)
+            self.maze = self.generate_maze(self.maze_height, self.maze_width)
             self.running = True
 
         self.init_plr_pos()
@@ -122,3 +156,7 @@ class MazeContainer:
                     break
             else:
                 print('Invalid move!')
+
+
+maze = MazeContainer()
+maze.generate_maze(24, 24)
