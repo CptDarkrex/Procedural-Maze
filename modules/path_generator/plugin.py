@@ -49,7 +49,7 @@ class Path_Generator:
 
         # Clean move stack, so it doesn't preserve moves from previous calls
         self.coordinates_stack = []
-        self.maze = [['🔴'] * self.maze_width for row in range(self.maze_height)]
+        self.maze = [['🌳'] * self.maze_width for row in range(self.maze_height)]
 
         x_step = 0
         y_step = 0
@@ -126,12 +126,12 @@ class Path_Generator:
         :return:
         """
         for item in self.coordinates_stack:
-            self.maze[item[0]][item[1]] = "🟢"
+            self.maze[item[0]][item[1]] = "🟡"
 
         for row in self.maze:
             print(row)
 
 
 # Remove, just for testing
-path_maze = Path_Generator((20, 20), (5, 5), (18, 19), (1, 1))
+path_maze = Path_Generator((40, 30), (5, 5), (30, 29), (1, 1))
 path_maze.generate_direct_path()
