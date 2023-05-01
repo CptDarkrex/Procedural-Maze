@@ -55,7 +55,7 @@ class Path_Generator:
         y_step = 0
 
         # Repeat until target is reached in x/y
-        while self.x_distance and self.y_distance != 0:
+        while self.x_distance != 0 or self.y_distance != 0:
             # 1- Determine (update) distance between current coordinate / finish in x/y
             self._update_xy_distance()
             # self._update_local_distance()
@@ -99,8 +99,6 @@ class Path_Generator:
             # 5- Repeat until distance is 0 for x/y
 
             self.coordinates_stack.append([self.y_curr_coordinate, self.x_curr_coordinate])
-            # self.x_curr_coordinate += x_step
-            # self.y_curr_coordinate += y_step
 
         print(self.coordinates_stack)
 
@@ -135,5 +133,5 @@ class Path_Generator:
 
 
 # Remove, just for testing
-path_maze = Path_Generator((40, 40), (5, 5), (38, 39), (1, 1))
+path_maze = Path_Generator((20, 20), (5, 5), (18, 19), (1, 1))
 path_maze.generate_direct_path()
