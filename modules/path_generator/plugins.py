@@ -83,7 +83,7 @@ class Path_Generator:
             if self.x_local_distance < 0:
                 for i in range(0, abs(self.x_local_distance - 1)):
                     self.coordinates_temp_stack.append([self.y_curr_coordinate, self.x_curr_coordinate - i])
-            else:
+            if self.x_local_distance > 0:
                 for i in range(0, self.x_local_distance + 1):
                     self.coordinates_temp_stack.append([self.y_curr_coordinate, self.x_curr_coordinate + i])
 
@@ -92,7 +92,7 @@ class Path_Generator:
             if self.y_local_distance < 0:
                 for i in range(0, abs(self.y_local_distance - 1)):
                     self.coordinates_temp_stack.append([self.y_curr_coordinate - i, self.x_curr_coordinate])
-            else:
+            if self.y_local_distance > 0:
                 for i in range(0, self.y_local_distance + 1):
                     self.coordinates_temp_stack.append([self.y_curr_coordinate + i, self.x_curr_coordinate])
             self.y_curr_coordinate = self.y_future_coordinate
