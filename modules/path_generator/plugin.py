@@ -105,9 +105,9 @@ class Path_Generator:
         for item in self.coordinates_temp_stack:
             self.coordinates_stack.append(item)
 
-        print(f"temporary coor: {self.coordinates_temp_stack}")
-        print(f"full stack: {self.coordinates_stack}")
-        self.print_maze()
+        # print(f"temporary coor: {self.coordinates_temp_stack}")
+        # print(f"full stack: {self.coordinates_stack}")
+        # self.print_maze()
 
     def _update_xy_distance(self):
         self.x_distance = self.x_finish - self.x_curr_coordinate
@@ -131,7 +131,52 @@ class Path_Generator:
         for row in self.maze:
             print(row)
 
+class Maze_Generator:
+
+    def __init__(self, maze_size: Tuple[int, int], start_coordinates=(0, 0), end_coordinates=(0, 0)):
+        self.maze_width = maze_size[1]
+        self.maze_height = maze_size[0]
+        self.maze_size = maze_size
+
+        self.start_coordinates = start_coordinates
+        self.finish_coordinates = end_coordinates
+
+        self.real_coordinates_stack = []    # Holds all path coordinates
+
+        # Create empty Maze, this is the base
+        self.maze = [['🌳'] * self.maze_width for row in range(self.maze_height)]
+
+    def generate_world(self, path_qty=5, print_maze=False):
+
+        jump_max_size = (5, 5)
+
+        # Generate Path for Start/End points
+        maze_path = Path_Generator(self.maze_size, jump_max_size, self.start_coordinates, self.finish_coordinates)
+        maze_path.generate_direct_path()
+        for item in maze_path.coordinates_stack:
+            self.real_coordinates_stack.append(item)
+
+        self.integrate_path_into_maze(maze_path.coordinates_stack)
+
+        for i in range(1, path_qty):
+            start_coordinates = (random.randint(0, self.maze_height-1), random.randint(0, self.maze_width-1))
+            finish_coordinates = (random.randint(0, self.maze_height - 1), random.randint(0, self.maze_width - 1))
+            maze_path = Path_Generator(self.maze_size, jump_max_size, start_coordinates, finish_coordinates)
+            maze_path.generate_direct_path()
+            self.integrate_path_into_maze(maze_path.coordinates_stack)
+            for item in maze_path.coordinates_stack:
+                self.real_coordinates_stack.append(item)
+
+        if print_maze:
+            for row in self.maze:
+                print(row)
+
+    def integrate_path_into_maze(self, maze_path_coordinate_stack):
+        for item in maze_path_coordinate_stack:
+            self.maze[item[0]][item[1]] = "🟡"
+
 
 # Remove, just for testing
-path_maze = Path_Generator((40, 30), (5, 5), (30, 29), (1, 1))
-path_maze.generate_direct_path()
+maze = Maze_Generator(maze_size=(40, 40), start_coordinates=(1, 1), end_coordinates=(39, 39))
+maze.generate_world(path_qty=20, print_maze=True)
+print(maze.real_coordinates_stack)
