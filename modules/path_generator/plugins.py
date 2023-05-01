@@ -118,7 +118,7 @@ class Path_Generator:
             print(row)
 
 # Remove, just for testing
-path_maze = Path_Generator([40, 40], [5, 5], [1, 1], [39, 39])
+path_maze = Path_Generator([40, 40], [5, 5], [39, 38], [15, 36])
 path_maze.generate_direct_path()
 
 
