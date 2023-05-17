@@ -171,6 +171,8 @@ class Maze_Generator:
             for row in self.maze:
                 print(row)
 
+        return self.maze
+
     def integrate_path_into_maze(self, maze_path_coordinate_stack):
         for item in maze_path_coordinate_stack:
             self.maze[item[0]][item[1]] = "🟡"
