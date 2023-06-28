@@ -26,6 +26,11 @@ class GuessingContainer:
         elif self.tries != 3:
             self.tries += 1
             print("Wrong, ", f"Current Tries: {self.tries}/{self.max_tries}")
+            if plr_guess < self.number:
+                print("Higher")
+            else:
+                print("Lower")
+
             print("")
             self.print_game()
 
