@@ -1,0 +1,22 @@
+{
+  "Science": [
+    {
+      "question": "What is the chemical symbol for gold?",
+      "answer": "Au"
+    },
+    {
+      "question": "Which planet is known as the Red Planet?",
+      "answer": "Mars"
+    }
+  ],
+  "History": [
+    {
+      "question": "Who was the first President of the United States?",
+      "answer": "George Washington"
+    },
+    {
+      "question": "In which year did World War II end?",
+      "answer": "1945"
+    }
+  ]
+}
