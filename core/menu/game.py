@@ -35,8 +35,6 @@ class MainMenu:
                 print("Thanks for using the program.")
                 return exit(0)
 
-            else:
-                print("Please enter 1,2,3 or 4 only")
 
     def interactable_menu(self):
         print("*****************************************")
@@ -50,7 +48,11 @@ class MainMenu:
         print()
         print("******************************************")
         print()
-        self.choice = int(input("Enter 1, 2, 3 or 4: "))
+        try:
+            self.choice = int(input("Enter 1, 2, 3 or 4: "))
+
+        except ValueError:
+            print("Please choose a number 1-4.")
 
     def maze_game(self):
         print()

@@ -11,14 +11,21 @@ class MazeContainer:
         self.running = False
         self.moves = {
             "up": [-1, 0],
+            "w": [-1, 0],
+
             "down": [1, 0],
+            "s":[1, 0],
+
             "left": [0, -1],
+            "a": [0, -1],
+
             "right": [0, 1],
+            "d": [0, 1],
         }
         self.maze_gen = Maze_Generator(maze_size=(40, 40), start_coordinates=(1, 1), end_coordinates=(39, 39))
         self.maze = []
-        self.exit_x = random.randint(0, 40 - 1)
-        self.exit_y = random.randint(0, 40 - 1)
+        self.exit_x = random.randint(0, 39 - 1)
+        self.exit_y = random.randint(0, 39 - 1)
 
     def init_plr_pos(self):
         self.player_pos = [self.start_y, self.start_x]
@@ -60,8 +67,12 @@ class MazeContainer:
         :return:
         """
         new_pos = [inst_player_pos[0] + inst_move[0], inst_player_pos[1] + inst_move[1]]
-        if self.maze[new_pos[0]][new_pos[1]] != '🌳':
-            self.player_pos[0], self.player_pos[1] = new_pos[0], new_pos[1]
+
+        try:
+            if self.maze[new_pos[0]][new_pos[1]] != '🌳':
+                self.player_pos[0], self.player_pos[1] = new_pos[0], new_pos[1]
+        except IndexError:
+            print("You can't go there!")
 
     def run_game(self):
         if self.running is False:
@@ -69,6 +80,7 @@ class MazeContainer:
 
             if self.maze[self.exit_y][self.exit_x] != '🌳':
                 self.maze[self.exit_y][self.exit_x] = "E"
+
             else:
                 while self.maze[self.exit_y][self.exit_x] == '🌳':
                     self.exit_y = random.randint(0, 40 - 1)
