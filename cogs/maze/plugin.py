@@ -1,11 +1,12 @@
 import random
+from modules import Maze_Generator
 
 
 class MazeContainer:
     def __init__(self):
         self.player_pos = []
-        self.start_x = 0
-        self.start_y = 0
+        self.start_x = 1
+        self.start_y = 1
         self.exit_obj = "E"  # can be a position; Example: [1, 3]
         self.running = False
         self.moves = {
@@ -14,51 +15,13 @@ class MazeContainer:
             "left": [0, -1],
             "right": [0, 1],
         }
+        self.maze_gen = Maze_Generator(maze_size=(40, 40), start_coordinates=(1, 1), end_coordinates=(39, 39))
         self.maze = []
-
-    def generate_maze(self, width, height):
-        # Initialize the maze grid
-        self.maze = [['#'] * width for row in range(height)]
-
-        # Starting point
-        self.start_x = random.randint(0, width - 1)
-        self.start_y = random.randint(0, height - 1)
-
-        exit_x = random.randint(0, width - 1)
-        exit_y = random.randint(0, height - 1)
-
-        # Generate the maze
-        self.generate_maze_recursive(self.start_x, self.start_y, self.maze)
-
-        # Add entrance and exit points
-        self.maze[self.start_y][self.start_x] = 'S'
-        self.maze[exit_y][exit_x] = 'E'
-
-        return self.maze
+        self.exit_x = random.randint(0, 40 - 1)
+        self.exit_y = random.randint(0, 40 - 1)
 
     def init_plr_pos(self):
         self.player_pos = [self.start_y, self.start_x]
-        return
-
-    def generate_maze_recursive(self, x, y, maze):
-        width = len(maze[0])
-        height = len(maze)
-
-        # Directions: 0 = up, 1 = right, 2 = down, 3 = left
-        directions = [(0, -2), (2, 0), (0, 2), (-2, 0)]
-        random.shuffle(directions)
-
-        for direction_x, direction_y in directions:
-            new_dir_x, new_dir_y = x + direction_x, y + direction_y
-
-            if new_dir_x < 0 or new_dir_y < 0 or new_dir_x >= width or new_dir_y >= height:
-                continue
-
-            if maze[new_dir_y][new_dir_x] == '#':
-                maze[y + direction_y // 2][x + direction_x // 2] = '.'
-                maze[new_dir_y][new_dir_x] = '.'
-
-                self.generate_maze_recursive(new_dir_x, new_dir_y, maze)
         return
 
     @staticmethod
@@ -97,12 +60,21 @@ class MazeContainer:
         :return:
         """
         new_pos = [inst_player_pos[0] + inst_move[0], inst_player_pos[1] + inst_move[1]]
-        if self.maze[new_pos[0]][new_pos[1]] != '#':
+        if self.maze[new_pos[0]][new_pos[1]] != '🌳':
             self.player_pos[0], self.player_pos[1] = new_pos[0], new_pos[1]
 
     def run_game(self):
         if self.running is False:
-            self.maze = self.generate_maze(10, 10)
+            self.maze = self.maze_gen.generate_world(5)
+
+            if self.maze[self.exit_y][self.exit_x] != '🌳':
+                self.maze[self.exit_y][self.exit_x] = "E"
+            else:
+                while self.maze[self.exit_y][self.exit_x] == '🌳':
+                    self.exit_y = random.randint(0, 40 - 1)
+                    self.exit_x = random.randint(0, 40 - 1)
+                self.maze[self.exit_y][self.exit_x] = "E"
+
             self.running = True
 
         self.init_plr_pos()

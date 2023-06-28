@@ -66,9 +66,6 @@ class Path_Generator:
 
             self._update_local_distance()
 
-
-
-
             if self.x_distance < 0: x_step = -x_step
 
             if self.y_distance < 0: y_step = -y_step
@@ -77,7 +74,6 @@ class Path_Generator:
             self.x_future_coordinate = self.x_curr_coordinate + x_step
             self.y_future_coordinate = self.y_curr_coordinate + y_step
             self._update_local_distance()
-
 
             # 4- Append x/y move to move stack
             if self.x_local_distance < 0:
@@ -131,6 +127,7 @@ class Path_Generator:
         for row in self.maze:
             print(row)
 
+
 class Maze_Generator:
 
     def __init__(self, maze_size: Tuple[int, int], start_coordinates=(0, 0), end_coordinates=(0, 0)):
@@ -176,9 +173,3 @@ class Maze_Generator:
     def integrate_path_into_maze(self, maze_path_coordinate_stack):
         for item in maze_path_coordinate_stack:
             self.maze[item[0]][item[1]] = "🟡"
-
-
-# Remove, just for testing
-maze = Maze_Generator(maze_size=(40, 40), start_coordinates=(1, 1), end_coordinates=(39, 39))
-maze.generate_world(path_qty=20, print_maze=True)
-print(maze.real_coordinates_stack)
