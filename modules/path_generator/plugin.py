@@ -49,7 +49,7 @@ class Path_Generator:
 
         # Clean move stack, so it doesn't preserve moves from previous calls
         self.coordinates_stack = []
-        self.maze = [['🌳'] * self.maze_width for row in range(self.maze_height)]
+        self.maze = [['#'] * self.maze_width for row in range(self.maze_height)]
 
         x_step = 0
         y_step = 0
@@ -96,7 +96,7 @@ class Path_Generator:
 
             self.coordinates_stack.append([self.y_curr_coordinate, self.x_curr_coordinate])
 
-        print(self.coordinates_stack)
+        #print(self.coordinates_stack)
 
         for item in self.coordinates_temp_stack:
             self.coordinates_stack.append(item)
@@ -122,7 +122,7 @@ class Path_Generator:
         :return:
         """
         for item in self.coordinates_stack:
-            self.maze[item[0]][item[1]] = "🟡"
+            self.maze[item[0]][item[1]] = "."
 
         for row in self.maze:
             print(row)
@@ -141,7 +141,7 @@ class Maze_Generator:
         self.real_coordinates_stack = []    # Holds all path coordinates
 
         # Create empty Maze, this is the base
-        self.maze = [['🌳'] * self.maze_width for row in range(self.maze_height)]
+        self.maze = [['#'] * self.maze_width for row in range(self.maze_height)]
 
     def generate_world(self, path_qty=5, print_maze=False):
 
@@ -172,4 +172,4 @@ class Maze_Generator:
 
     def integrate_path_into_maze(self, maze_path_coordinate_stack):
         for item in maze_path_coordinate_stack:
-            self.maze[item[0]][item[1]] = "🟡"
+            self.maze[item[0]][item[1]] = "."
