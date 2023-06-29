@@ -69,7 +69,7 @@ class MazeContainer:
         new_pos = [inst_player_pos[0] + inst_move[0], inst_player_pos[1] + inst_move[1]]
 
         try:
-            if self.maze[new_pos[0]][new_pos[1]] != '🌳':
+            if self.maze[new_pos[0]][new_pos[1]] != '#':
                 self.player_pos[0], self.player_pos[1] = new_pos[0], new_pos[1]
         except IndexError:
             print("You can't go there!")
@@ -78,11 +78,11 @@ class MazeContainer:
         if self.running is False:
             self.maze = self.maze_gen.generate_world(5)
 
-            if self.maze[self.exit_y][self.exit_x] != '🌳':
+            if self.maze[self.exit_y][self.exit_x] != '#':
                 self.maze[self.exit_y][self.exit_x] = "E"
 
             else:
-                while self.maze[self.exit_y][self.exit_x] == '🌳':
+                while self.maze[self.exit_y][self.exit_x] == '#':
                     self.exit_y = random.randint(0, 40 - 1)
                     self.exit_x = random.randint(0, 40 - 1)
                 self.maze[self.exit_y][self.exit_x] = "E"
